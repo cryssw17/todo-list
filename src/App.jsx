@@ -9,9 +9,17 @@ function App() {
     let newTodo = {
       id: Date.now(),
       title: todoTitle,
+      isCompleted: false,
     }
 
     setTodoList(prev => [newTodo, ...prev]);
+
+  }
+
+function completeTodo(id) {
+  let checkComplete = todoList.map(todo => (todo.id === id ? ({...todo, isCompleted: true}) : todo));
+
+  setTodoList(checkComplete);
 
   }
 
@@ -19,7 +27,7 @@ function App() {
     <div>
       <h1>Todo List</h1>
       <TodoForm onAddTodo={addTodo} />
-      <TodoList todoList={todoList} />
+      <TodoList todoList={todoList} onCompleteTodo={completeTodo} />
     </div>
   )
 }
