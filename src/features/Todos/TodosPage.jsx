@@ -1,9 +1,40 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import TodoForm from './TodoForm.jsx';
 import TodoList from './TodoList.jsx';
 
-function TodosPage() {
+function TodosPage({token}) {
 const [todoList, setTodoList] = useState([]);
+const [error, setError] = useState('');
+const [isTodoListLoading, setIsTodoListLoading] = useState(false);
+
+
+useEffect(() => {
+(async function fetchTodos (){
+  setIsTodoListLoading(true);
+  try{
+    const resp = await fetch('/api/tasks', {
+      method: 'GET',
+      headers: {'X-CSRF-TOKEN': token},
+      credentials: 'include'
+    });
+    const data = await resp.json();
+    if(resp.status === 200 ){
+      setTodoList(data.tasks)
+    } else if (resp.status === 401) {
+      throw new Error("Unauthorized");
+    } else {
+      throw new Error("Failed to load tasks");
+    }
+  }
+  catch (error) {
+    setError(`Error: ${error.name} | ${error.message}`);
+  }
+  finally {
+    setIsTodoListLoading(false);
+  }
+}());
+
+},[token]);
 
 function addTodo(todoTitle){
     let newTodo = {
