@@ -6,6 +6,7 @@ function TodosPage({token}) {
 const [todoList, setTodoList] = useState([]);
 const [error, setError] = useState('');
 const [isTodoListLoading, setIsTodoListLoading] = useState(false);
+const [isOperationLoading, setIsOperationLoading] = useState(false);
 
 
 useEffect(() => {
@@ -18,7 +19,7 @@ useEffect(() => {
       credentials: 'include'
     });
     const data = await resp.json();
-    if(resp.status === 200 ){
+    if(resp.ok ){
       setTodoList(data.tasks)
     } else if (resp.status === 401) {
       throw new Error("Unauthorized");
@@ -37,6 +38,7 @@ useEffect(() => {
 },[token]);
 
 async function addTodo(todoTitle){
+  setIsOperationLoading(true);
     let newTodo = {
       id: Date.now(),
       title: todoTitle,
@@ -53,7 +55,7 @@ async function addTodo(todoTitle){
         body: JSON.stringify({title:todoTitle, isCompleted: false}),
       });
       const data = await resp.json();
-      if(resp.status === 200){
+      if(resp.ok){
         setTodoList(prev => prev.map(todo => todo.id === newTodo.id ? data : todo));
       } else {
         setTodoList(prev => prev.filter(todo => todo.id !== newTodo.id));
@@ -63,10 +65,14 @@ async function addTodo(todoTitle){
     catch (error) {
     setError(`Error: ${error.name} | ${error.message}`);
     }
-
+    finally {
+      setIsOperationLoading(false);
+    }
   }
 
 async function completeTodo(id) {
+  setIsOperationLoading(true);
+
   const originalTodo = todoList.find(todo => todo.id === id);
 
   let checkComplete = todoList.map(todo => (todo.id === id ? ({...todo, isCompleted: true}) : todo));
@@ -89,10 +95,13 @@ async function completeTodo(id) {
     setTodoList(prev => prev.map(todo => todo.id === id ? originalTodo : todo));
     setError(`Error: ${error.name} | ${error.message}`);
   }
-
+  finally {
+    setIsOperationLoading(false);
+  }
   }
 
 async function updateTodo(editedTodo) {
+    setIsOperationLoading(true);
     const originalTodo = todoList.find(todo => todo.id === editedTodo.id);
 
     let updatedTodos = todoList.map(todo => (todo.id === editedTodo.id ? ({...editedTodo}) : todo));
@@ -114,6 +123,9 @@ async function updateTodo(editedTodo) {
       setTodoList(prev => prev.map(todo => todo.id === editedTodo.id ? originalTodo : todo));
       setError(`Error: ${error.name} | ${error.message}`);
     }
+    finally{
+      setIsOperationLoading(false);
+    }
   }
 
   return (
@@ -126,11 +138,15 @@ async function updateTodo(editedTodo) {
 
       {isTodoListLoading && <p>Loading...</p>}
 
-      <TodoForm onAddTodo={addTodo} />
+      <TodoForm 
+        onAddTodo={addTodo}
+        isOperationLoading={isOperationLoading} />
+
       <TodoList 
         todoList={todoList}
         onCompleteTodo={completeTodo}
-        onUpdateTodo={updateTodo} />
+        onUpdateTodo={updateTodo}
+        isOperationLoading={isOperationLoading} />
     </div>
   )
 }

@@ -54,13 +54,16 @@ function Logon ({onSetEmail, onSetToken}) {
               onChange={handleEmailChange}
               elementId="email"
               labelText="Email:"
+              required
             />
 
             <TextInputWithLabel
+              type="password"
               value={password}
               onChange={handlePasswordChange}
               elementId="password"
               labelText="Password:"
+              required
             />
 
             <button type="submit" disabled={isLoggingOn}>{isLoggingOn ? "Logging in...." : "Log On"}</button>

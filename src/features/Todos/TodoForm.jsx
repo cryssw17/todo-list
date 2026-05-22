@@ -4,7 +4,7 @@ import TextInputWithLabel from '../../shared/TextInputWithLabel';
 import {isValidTodoTitle} from '../../utils/todoValidation.js';
 
 
-function TodoForm({onAddTodo}){
+function TodoForm({onAddTodo, isOperationLoading}){
     const inputRef = useRef(null);
 
     const [workingTodoTitle, setWorkingTodoTitle] = useState('');
@@ -32,7 +32,7 @@ function TodoForm({onAddTodo}){
                 elementId="todoTitle"
                 labelText="Todo"
             />
-            <button type="submit" disabled={!isValidTodoTitle(workingTodoTitle)}>Add Todo</button>
+            <button type="submit" disabled={!isValidTodoTitle(workingTodoTitle) || isOperationLoading}>Add Todo</button>
         </form>
     );
 }
