@@ -3,6 +3,7 @@ import TodoForm from './TodoForm.jsx';
 import TodoList from './TodoList.jsx';
 import SortBy from '../../shared/SortBy.jsx';
 import useDebounce from '../../utils/useDebounce.js';
+import FilterInput from '../../shared/FilterInput.jsx';
 
 function TodosPage({token}) {
 const [todoList, setTodoList] = useState([]);
@@ -13,6 +14,7 @@ const [sortBy, setSortBy] = useState('creationDate');
 const [sortDirection, setSortDirection] = useState('desc');
 const [filterTerm, setFilterTerm] = useState('');
 const [dataVersion, setDataVersion] = useState(0);
+const [filterError, setFilterError] = useState('');
 
 const debouncedFilterTerm = useDebounce(filterTerm, 300);
 
@@ -50,6 +52,7 @@ useEffect(() => {
     const data = await resp.json();
     if(resp.ok ){
       setTodoList(data.tasks)
+      setFilterError('');
     } else if (resp.status === 401) {
       throw new Error("Unauthorized");
     } else {
@@ -57,7 +60,11 @@ useEffect(() => {
     }
   }
   catch (error) {
-    setError(`Error: ${error.name} | ${error.message}`);
+    if (debouncedFilterTerm || sortBy !== 'creationDate' || sortDirection !== 'desc'){
+      setFilterError(`Error filtering/sorting todos: ${error.message}`);
+    } else {
+      setError(`Error fetching todos: ${error.message}`);
+    }
   }
   finally {
     setIsTodoListLoading(false);
@@ -165,6 +172,13 @@ async function updateTodo(editedTodo) {
     }
   }
 
+  function handleResetFilter () {
+    setFilterTerm('');
+    setSortBy('creationDate');
+    setSortDirection('desc');
+    setFilterError('');
+  }
+
   return (
     <div>
       {error && 
@@ -172,6 +186,13 @@ async function updateTodo(editedTodo) {
         <p>{error}</p>
         <button onClick={() => setError('')}>Clear Error</button>
         </div>}
+
+    {filterError && 
+         <div>
+          <p>{filterError}</p>
+          <button onClick={() => setFilterError('')}>Clear Filter Error</button>
+          <button onClick={handleResetFilter}>Reset Filters</button>
+         </div>}
 
       {isTodoListLoading && <p>Loading...</p>}
 
@@ -183,7 +204,7 @@ async function updateTodo(editedTodo) {
 
       <FilterInput 
         filterTerm={filterTerm}
-        onHandleFilterChange={handleFilterChange} />
+        onFilterChange={handleFilterChange} />
 
       <TodoForm 
         onAddTodo={addTodo}
@@ -195,6 +216,7 @@ async function updateTodo(editedTodo) {
         onUpdateTodo={updateTodo}
         isOperationLoading={isOperationLoading}
         dataVersion={dataVersion}/>
+
     </div>
   )
 }
