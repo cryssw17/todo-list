@@ -2,6 +2,7 @@ import {useState, useEffect} from 'react';
 import TodoForm from './TodoForm.jsx';
 import TodoList from './TodoList.jsx';
 import SortBy from '../../shared/SortBy.jsx';
+import useDebounce from '../../utils/useDebounce.js';
 
 function TodosPage({token}) {
 const [todoList, setTodoList] = useState([]);
@@ -10,15 +11,28 @@ const [isTodoListLoading, setIsTodoListLoading] = useState(false);
 const [isOperationLoading, setIsOperationLoading] = useState(false);
 const [sortBy, setSortBy] = useState('creationDate');
 const [sortDirection, setSortDirection] = useState('desc');
+const [filterTerm, setFilterTerm] = useState('');
+
+const debouncedFilterTerm = useDebounce(filterTerm, 300);
+
+function handleFilterChange (newTerm) {
+  return setFilterTerm(newTerm);
+};
 
 useEffect(() => {
 (async function fetchTodos (){
   setIsTodoListLoading(true);
   
-  const params = new URLSearchParams({
+  const paramsObject = {
     sortBy, 
     sortDirection,
-  });
+  };
+
+  if(debouncedFilterTerm){
+    paramsObject.find = debouncedFilterTerm;
+  }
+
+  const params = new URLSearchParams(paramsObject);
 
   try{
     const resp = await fetch(`/api/tasks?${params}`, {
@@ -43,7 +57,7 @@ useEffect(() => {
   }
 }());
 
-},[token, sortBy, sortDirection]);
+},[token, sortBy, sortDirection, debouncedFilterTerm]);
 
 async function addTodo(todoTitle){
   setIsOperationLoading(true);
@@ -151,6 +165,10 @@ async function updateTodo(editedTodo) {
         sortDirection={sortDirection}
         onSortByChange={setSortBy}
         onSortDirectionChange={setSortDirection} />
+
+      <FilterInput 
+        filterTerm={filterTerm}
+        onHandleFilterChange={handleFilterChange} />
 
       <TodoForm 
         onAddTodo={addTodo}
