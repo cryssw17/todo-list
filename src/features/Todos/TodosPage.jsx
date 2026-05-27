@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useCallback} from 'react';
 import TodoForm from './TodoForm.jsx';
 import TodoList from './TodoList.jsx';
 import SortBy from '../../shared/SortBy.jsx';
@@ -12,12 +12,19 @@ const [isOperationLoading, setIsOperationLoading] = useState(false);
 const [sortBy, setSortBy] = useState('creationDate');
 const [sortDirection, setSortDirection] = useState('desc');
 const [filterTerm, setFilterTerm] = useState('');
+const [dataVersion, setDataVersion] = useState(0);
 
 const debouncedFilterTerm = useDebounce(filterTerm, 300);
 
 function handleFilterChange (newTerm) {
   return setFilterTerm(newTerm);
 };
+
+const invalidateCache = useCallback (() => {
+  setDataVersion(prev => prev + 1);
+  console.log("Invalidating memo cache after todo mutation");
+},[]);
+
 
 useEffect(() => {
 (async function fetchTodos (){
@@ -79,6 +86,7 @@ async function addTodo(todoTitle){
       const data = await resp.json();
       if(resp.ok){
         setTodoList(prev => prev.map(todo => todo.id === newTodo.id ? data : todo));
+        invalidateCache();
       } else {
         setTodoList(prev => prev.filter(todo => todo.id !== newTodo.id));
         setError("Failed to add todo");
@@ -101,6 +109,7 @@ async function completeTodo(id) {
 
   setTodoList(checkComplete);
 
+
   try {
     const resp = await fetch(`/api/tasks/${id}`, {
       method: 'PATCH', 
@@ -111,6 +120,9 @@ async function completeTodo(id) {
     if (!resp.ok) {
       setTodoList(prev => prev.map(todo => todo.id === id ? originalTodo : todo ));
       setError("Failed to complete todo");
+    }
+    else {
+      invalidateCache();
     }
   } 
   catch (error) {
@@ -139,6 +151,9 @@ async function updateTodo(editedTodo) {
       });
       if (!resp.ok) {
         setTodoList(prev => prev.map(todo => todo.id === editedTodo.id ? originalTodo : todo));
+      }
+      else {
+        invalidateCache();
       }
     }
     catch (error) {
@@ -178,7 +193,8 @@ async function updateTodo(editedTodo) {
         todoList={todoList}
         onCompleteTodo={completeTodo}
         onUpdateTodo={updateTodo}
-        isOperationLoading={isOperationLoading} />
+        isOperationLoading={isOperationLoading}
+        dataVersion={dataVersion}/>
     </div>
   )
 }
