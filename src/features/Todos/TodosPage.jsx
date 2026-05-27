@@ -1,19 +1,27 @@
 import {useState, useEffect} from 'react';
 import TodoForm from './TodoForm.jsx';
 import TodoList from './TodoList.jsx';
+import SortBy from '../../shared/SortBy.jsx';
 
 function TodosPage({token}) {
 const [todoList, setTodoList] = useState([]);
 const [error, setError] = useState('');
 const [isTodoListLoading, setIsTodoListLoading] = useState(false);
 const [isOperationLoading, setIsOperationLoading] = useState(false);
-
+const [sortBy, setSortBy] = useState('creationDate');
+const [sortDirection, setSortDirection] = useState('desc');
 
 useEffect(() => {
 (async function fetchTodos (){
   setIsTodoListLoading(true);
+  
+  const params = new URLSearchParams({
+    sortBy, 
+    sortDirection,
+  });
+
   try{
-    const resp = await fetch('/api/tasks', {
+    const resp = await fetch(`/api/tasks?${params}`, {
       method: 'GET',
       headers: {'X-CSRF-TOKEN': token},
       credentials: 'include'
@@ -35,7 +43,7 @@ useEffect(() => {
   }
 }());
 
-},[token]);
+},[token, sortBy, sortDirection]);
 
 async function addTodo(todoTitle){
   setIsOperationLoading(true);
@@ -137,6 +145,12 @@ async function updateTodo(editedTodo) {
         </div>}
 
       {isTodoListLoading && <p>Loading...</p>}
+
+      <SortBy
+        sortBy={sortBy}
+        sortDirection={sortDirection}
+        onSortByChange={setSortBy}
+        onSortDirectionChange={setSortDirection} />
 
       <TodoForm 
         onAddTodo={addTodo}
