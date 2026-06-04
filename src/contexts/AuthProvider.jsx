@@ -45,7 +45,7 @@ export function AuthProvider({ children }) {
         if (!token) {
             setEmail('');
             setToken('');
-            return
+            return {success: true};
         } else {
         //api call to /user/logoff
         try{
@@ -76,7 +76,7 @@ export function AuthProvider({ children }) {
             setToken('');
             return {
                 success: false,
-                error: `Network error duing logout: ${error.message}`,
+                error: `Network error during logout: ${error.message}`,
             };
         }
     

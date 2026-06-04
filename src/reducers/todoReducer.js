@@ -30,10 +30,10 @@ export const TODO_ACTIONS = {
 export const initialTodoState = {
     todoList: [],
     error: '',
-    isTodoListLoading: false,
+    isTodoListLoading: true,
     isOperationLoading: false,
-    sortBy: 'creationDate',
-    sortDirection: 'desc',
+    sortBy: 'createdDate',
+    sortDirection: 'asc',
     filterTerm: '',
     dataVersion: 0,
     filterError: '',
