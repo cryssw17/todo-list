@@ -70,7 +70,7 @@ useEffect(() => {
     }
   }
   catch (error) {
-    const isFilterError = (debouncedFilterTerm || sortBy !== 'creationDate' || sortDirection !== 'desc');
+    const isFilterError = (debouncedFilterTerm || sortBy !== 'createdDate' || sortDirection !== 'asc');
 
     dispatch({
         type: TODO_ACTIONS.FETCH_ERROR,
