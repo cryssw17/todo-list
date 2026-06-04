@@ -1,36 +1,23 @@
 import {useState} from 'react';
 import TextInputWithLabel from '../shared/TextInputWithLabel';
+import { useAuth } from '../contexts/AuthContext.jsx'
 
-function Logon ({onSetEmail, onSetToken}) {
+function Logon () {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [authError, setAuthError] = useState('');
     const [isLoggingOn, setIsLoggingOn] = useState(false);
 
+    const { login } = useAuth();
+
     async function handleSubmit(event){
         event.preventDefault();
         setIsLoggingOn(true);
-        try{
-            const resp = await fetch('/api/users/logon', {
-                method: 'POST',
-                headers: {'Content-Type' : 'application/json'},
-                credentials: 'include',
-                body: JSON.stringify({email, password})
-            });
-            const data = await resp.json();
-            if(resp.status === 200 && data.name && data.csrfToken) {
-                onSetEmail(data.name);
-                onSetToken(data.csrfToken);
-            } else {
-                setAuthError(`Authentication failed: ${data?.message}`);
-            }
+        const loginRequest = await login(email, password);
+        if(!loginRequest.success){
+            setAuthError(loginRequest.error)
         }
-        catch(error){
-            setAuthError(`Error: ${error.name} | ${error.message}`);
-        }
-        finally {
-            setIsLoggingOn(false);
-        }
+        setIsLoggingOn(false);
     }
 
     function handleEmailChange (event) {
