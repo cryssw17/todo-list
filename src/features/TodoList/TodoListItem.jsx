@@ -36,7 +36,7 @@ function TodoListItem({ todo, onCompleteTodo, onUpdateTodo, isOperationLoading }
                   value={workingTitle} 
                   onChange={handleEdit}
                   elementId="updateTodo"
-                  labelText="Todo Update"
+                  labelText="Update Todo:"
                   />
                <button type="button" onClick={handleCancel}>Cancel</button>
                <button type="button" onClick={handleUpdate} disabled={!isValidTodoTitle(workingTitle) || isOperationLoading}>Update</button>
