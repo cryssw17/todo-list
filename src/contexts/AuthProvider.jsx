@@ -11,8 +11,8 @@ export function AuthProvider({ children }) {
         try {
             const options ={
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json'},
-                body: JSON.stringify({ email: userEmail, password}),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: userEmail, password }),
                 credentials: 'include',
             }
 
@@ -45,13 +45,13 @@ export function AuthProvider({ children }) {
         if (!token) {
             setEmail('');
             setToken('');
-            return {success: true};
+            return { success: true };
         } else {
         //api call to /user/logoff
         try{
             const options = {
                 method: 'POST',
-                headers: { 'X-CSRF-TOKEN': token},
+                headers: { 'X-CSRF-TOKEN': token },
                 credentials: 'include',
             }
 
@@ -62,7 +62,7 @@ export function AuthProvider({ children }) {
             if (resp.status === 200){
                 setEmail('');
                 setToken('');
-                return {success: true};
+                return { success: true };
             } else {
                 setEmail('');
                 setToken('');

@@ -1,7 +1,7 @@
 import TodoListItem from "../TodoList/TodoListItem.jsx";
-import {useMemo} from 'react';
+import { useMemo } from 'react';
 
-function TodoList({todoList, onCompleteTodo, onUpdateTodo, isOperationLoading, dataVersion}) {
+function TodoList({ todoList, onCompleteTodo, onUpdateTodo, isOperationLoading, dataVersion }) {
 
   const filteredTodoList = useMemo(() =>
      ({
