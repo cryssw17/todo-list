@@ -34,6 +34,10 @@ function ProfilePage(){
                     throw new Error('Unauthorized');
                 }
 
+                if (!statsResp.ok) {
+                    throw new Error('Failed to fetch todos');
+                }
+
                 const todos = await statsResp.json();
 
                 //calculate stats

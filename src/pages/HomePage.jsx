@@ -13,6 +13,12 @@ function HomePage() {
             navigate('/login', { replace:true });
         }
         }, [isAuthenticated, navigate]);
+
+        return (
+            <div>
+                <p>Redirecting...</p>
+            </div>
+        )
     };
 
     export default HomePage;
