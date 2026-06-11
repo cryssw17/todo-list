@@ -57,7 +57,7 @@ useEffect(() => {
   
 
   try{
-    const resp = await fetch(`/api/tasks?${params}`, {
+    const resp = await fetch(`/api/tasks?limit=50&${params}`, {
       method: 'GET',
       headers: { 'X-CSRF-TOKEN': token },
       credentials: 'include'
