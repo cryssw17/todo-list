@@ -5,6 +5,7 @@ function TodoList({
    todoList,
    onCompleteTodo,
    onUpdateTodo,
+   onDeleteTodo,
    isOperationLoading,
    dataVersion,
    statusFilter = 'active', //setting default status to active todos
@@ -52,7 +53,8 @@ function TodoList({
              key={todo.id}
              todo={todo}
              onCompleteTodo={onCompleteTodo}
-             onUpdateTodo={onUpdateTodo} 
+             onUpdateTodo={onUpdateTodo}
+             onDeleteTodo={onDeleteTodo}
              isOperationLoading={isOperationLoading}/>)}
       </ul>);
     }
