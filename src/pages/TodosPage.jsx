@@ -134,7 +134,8 @@ async function addTodo(todoTitle){
 
 async function completeTodo(id) {
   const originalTodo = todoList.find(todo => todo.id === id);
-  let checkComplete = todoList.map(todo => (todo.id === id ? ({...todo, isCompleted: true}) : todo));
+  //toggle check box for completed tasks/ uncheck box for uncompleted (active) tasks
+  let checkComplete = todoList.map(todo => (todo.id === id ? ({...todo, isCompleted: !todo.isCompleted}) : todo));
 
   dispatch({
     type: TODO_ACTIONS.COMPLETE_TODO_START,
@@ -147,8 +148,12 @@ async function completeTodo(id) {
       method: 'PATCH', 
       headers: { 'Content-Type' : 'application/json', 'X-CSRF-TOKEN' : token }, 
       credentials: 'include', 
-      body: JSON.stringify({ isCompleted: true })
+      body: JSON.stringify({ isCompleted: !originalTodo.isCompleted })
     });
+
+    const completedResp = await resp.json();
+    console.log(completedResp);
+
     if (!resp.ok) {
           throw new Error('Failed to complete todo');
         }
