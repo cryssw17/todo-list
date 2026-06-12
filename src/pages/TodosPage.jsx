@@ -204,23 +204,20 @@ async function updateTodo(editedTodo) {
   async function deleteTodo(id) {
     try {
       dispatch({
-        type: TODO_ACTIONS.DELETE_TODO_START
-      });
+        type: TODO_ACTIONS.DELETE_TODO_START});
 
-      const options = {
+      const resp = await fetch(`/api/tasks/${id}`, {
         method: 'DELETE',
         headers: { 'X-CSRF-TOKEN': token },
         credentials: 'include'
-      }
-
-      const resp = await fetch(`/api/tasks/${id}`, options);
+      });
 
       if (resp.status === 401) {
         throw new Error('Unauthorized');
       } if (!resp.ok) {
         throw new Error('Failed to deleted todo');
       }
-      dispatch({ type: TODO_ACTIONS.DELETE_SUCCESS,
+      dispatch({ type: TODO_ACTIONS.DELETE_TODO_SUCCESS,
         payload: {id}
       });
     } catch(error) {
