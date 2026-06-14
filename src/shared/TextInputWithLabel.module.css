@@ -1,0 +1,22 @@
+.textInput {
+  display: flex;
+  flex-direction: row;
+  background-color: var(--color-accent);
+  border-radius: 25px;
+  padding: 3px 7px 5px 5px;
+}
+
+.label {
+  margin: auto 1rem;
+  color: white;
+}
+
+.input {
+  background-color: white;
+  border-radius: 25px;
+}
+
+.input:focus {
+  outline: none;
+  border: 2px solid var(--color-secondary);
+}

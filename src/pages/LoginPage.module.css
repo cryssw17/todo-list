@@ -1,0 +1,25 @@
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.error {
+  color: var(--color-alert);
+  background-color: lightpink;
+  border-radius: 6px;
+  padding: 0.5rem, 0.75rem;
+}
+
+.btn {
+  padding: 1rem 3rem;
+  background-color: var(--color-secondary);
+  border-radius: 7px;
+  font-size: var(--font-size-base);
+}
+
+.btn:hover {
+  filter: brightness(0.8);
+  color: white;
+}

@@ -1,72 +1,75 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router';
-import TextInputWithLabel from '../shared/TextInputWithLabel';
-import { useAuth } from '../contexts/AuthContext';
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router";
+import TextInputWithLabel from "../shared/TextInputWithLabel";
+import { useAuth } from "../contexts/AuthContext";
+import styles from "./LoginPage.module.css";
 
 function LoginPage() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [authError, setAuthError] = useState('');
-    const [isLoggingOn, setIsLoggingOn] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [authError, setAuthError] = useState("");
+  const [isLoggingOn, setIsLoggingOn] = useState(false);
 
-    const { login, isAuthenticated } = useAuth();
-    const navigate = useNavigate();
-    const location = useLocation();
+  const { login, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const from = location.state?.from?.pathname || '/todos';
+  const from = location.state?.from?.pathname || "/todos";
 
-    //redirects if user already authenticated 
-    useEffect(() => {
-        if(isAuthenticated) {
-            navigate(from, { replace: true });
-        }
-    },[isAuthenticated, navigate, from]);
-
-    //Login form submission logic
-    async function handleSubmit(event){
-        event.preventDefault();
-        setIsLoggingOn(true);
-        const loginRequest = await login(email, password);
-        if(!loginRequest.success){
-            setAuthError(loginRequest.error)
-        }
-        setIsLoggingOn(false);
+  //redirects if user already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(from, { replace: true });
     }
+  }, [isAuthenticated, navigate, from]);
 
-    function handleEmailChange(event){
-        setEmail(event.target.value);
-
+  //Login form submission logic
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setIsLoggingOn(true);
+    const loginRequest = await login(email, password);
+    if (!loginRequest.success) {
+      setAuthError(loginRequest.error);
     }
+    setIsLoggingOn(false);
+  }
 
-    function handlePasswordChange(event){
-        setPassword(event.target.value);
-    }
+  function handleEmailChange(event) {
+    setEmail(event.target.value);
+  }
 
-    return(
-        <form onSubmit={handleSubmit}>
-            {authError && <p>{authError}</p>}
+  function handlePasswordChange(event) {
+    setPassword(event.target.value);
+  }
 
-            <TextInputWithLabel 
-                value={email}
-                onChange={handleEmailChange}
-                elementId="email"
-                labelText="Email:"
-                required />
+  return (
+    <div className="pageCard">
+      <form className={styles.loginForm} onSubmit={handleSubmit}>
+        <div className={styles.error}>{authError && <p>{authError}</p>}</div>
 
-            <TextInputWithLabel
-                type="password"
-                value={password}
-                onChange={handlePasswordChange}
-                elementId="password"
-                labelText="Password:"
-                required
-                />
+        <TextInputWithLabel
+          value={email}
+          onChange={handleEmailChange}
+          elementId="email"
+          labelText="Email:"
+          required
+        />
 
-                <button type="submit" disabled={isLoggingOn}>{isLoggingOn ? "Logging in...." : "Log On"} </button>
+        <TextInputWithLabel
+          type="password"
+          value={password}
+          onChange={handlePasswordChange}
+          elementId="password"
+          labelText="Password:"
+          required
+        />
 
-        </form>
-    )
-
+        <button className={styles.btn} type="submit" disabled={isLoggingOn}>
+          {isLoggingOn ? "Logging in...." : "Log On"}{" "}
+        </button>
+      </form>
+    </div>
+  );
 }
 
 export default LoginPage;

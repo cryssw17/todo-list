@@ -1,80 +1,81 @@
-import { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useState, useEffect } from "react";
+import { useAuth } from "../contexts/AuthContext";
 
-function ProfilePage(){
-    const {email, token} = useAuth();
-    const username = email;
+function ProfilePage() {
+  const { email, token } = useAuth();
+  const username = email;
 
-    const [loading, setLoading] = useState(false);
-    const [todoStats, setTodoStats] = useState({
-        total: 0,
-        completed:0,
-        active:0
-    });
-    const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [todoStats, setTodoStats] = useState({
+    total: 0,
+    completed: 0,
+    active: 0,
+  });
+  const [error, setError] = useState("");
 
+  useEffect(() => {
+    async function fetchTodoStats() {
+      if (!token) return;
 
-    useEffect(() => {
-        async function fetchTodoStats(){
-            if(!token) return;
+      try {
+        setLoading(true);
+        setError("");
 
-            try {
-                setLoading(true);
-                setError('');
+        const options = {
+          method: "GET",
+          headers: { "X-CSRF-TOKEN": token },
+          credentials: "include",
+        };
 
-                const options = {
-                    method: 'GET',
-                    headers: { 'X-CSRF-TOKEN' : token },
-                    credentials: 'include',
-                };
+        const statsResp = await fetch("/api/tasks?limit=50", options);
 
-                const statsResp = await fetch('/api/tasks?limit=50', options);
-
-                if (statsResp.status === 401) {
-                    throw new Error('Unauthorized');
-                }
-
-                if (!statsResp.ok) {
-                    throw new Error('Failed to fetch todos');
-                }
-
-                const todos = await statsResp.json();
-
-                //calculate stats
-                const total = todos.tasks.length;
-                const completed = todos.tasks.filter((todo) => todo.isCompleted).length;
-                const active = total - completed;
-
-                setTodoStats({total, completed, active});
-            } catch (error) {
-                setError(`Error loading statistics: ${error.message} `);
-            } finally {
-                setLoading(false);
-            }
+        if (statsResp.status === 401) {
+          throw new Error("Unauthorized");
         }
 
-        fetchTodoStats();
-    }, [token]);
+        if (!statsResp.ok) {
+          throw new Error("Failed to fetch todos");
+        }
 
-    const percentage = todoStats.total > 0 ? Math.floor((todoStats.completed / todoStats.total) *100) : 0;
+        const todos = await statsResp.json();
 
-    return(
-        <>
-        <h2>Username: {username} </h2>
+        //calculate stats
+        const total = todos.tasks.length;
+        const completed = todos.tasks.filter((todo) => todo.isCompleted).length;
+        const active = total - completed;
 
-        <h2>Todo Statistics</h2>
-        {loading && <p>Loading Stats...</p>}
+        setTodoStats({ total, completed, active });
+      } catch (error) {
+        setError(`Error loading statistics: ${error.message} `);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-        {error && <p>{error}</p>}
+    fetchTodoStats();
+  }, [token]);
 
-        <p>Active Todos: {todoStats.active} </p>
-        <p>Completed Todos: {todoStats.completed} </p>
-        <p>Total Todos: {todoStats.total}</p>
-        <p>Percentage of todos completed: {percentage} %</p>
-        
-        </>
+  const percentage =
+    todoStats.total > 0
+      ? Math.floor((todoStats.completed / todoStats.total) * 100)
+      : 0;
 
-    );
+  return (
+    <>
+      <h4>Username: {username} </h4>
+      <h4>Status: Active</h4>
+
+      <h2>Todo Statistics</h2>
+      {loading && <p>Loading Stats...</p>}
+
+      {error && <p>{error}</p>}
+
+      <p>Active Todos: {todoStats.active} </p>
+      <p>Completed Todos: {todoStats.completed} </p>
+      <p>Total Todos: {todoStats.total}</p>
+      <p>Percentage of todos completed: {percentage} %</p>
+    </>
+  );
 }
 
 export default ProfilePage;

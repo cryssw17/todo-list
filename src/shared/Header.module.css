@@ -1,0 +1,14 @@
+.header {
+  background-color: var(--color-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  align-items: center;
+}
+
+.logoutBtn {
+  background-color: var(--color-primary);
+}
