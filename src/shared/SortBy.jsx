@@ -1,3 +1,5 @@
+import styles from "./SortBy.module.css";
+
 function SortBy({
   sortBy,
   sortDirection,
@@ -5,26 +7,44 @@ function SortBy({
   onSortDirectionChange,
 }) {
   return (
-    <div>
-      <label htmlFor="sortBy">Sort by</label>
-      <select
-        id="sortBy"
-        value={sortBy}
-        onChange={(event) => onSortByChange(event.target.value)}
-      >
-        <option value="createdDate">Creation Date</option>
-        <option value="title">Title</option>
-      </select>
+    <div className={styles.sort}>
+      <div className={styles.sortby}>
+        <label className={styles.formLabel} htmlFor="sortBy">
+          Sort by
+        </label>
+        <select
+          className={styles.formSelect}
+          id="sortBy"
+          value={sortBy}
+          onChange={(event) => onSortByChange(event.target.value)}
+        >
+          <option className={styles.option} value="createdDate">
+            Creation Date
+          </option>
+          <option className={styles.option} value="title">
+            Title
+          </option>
+        </select>
+      </div>
 
-      <label htmlFor="sortDirection">Order</label>
-      <select
-        id="sortDirection"
-        value={sortDirection}
-        onChange={(event) => onSortDirectionChange(event.target.value)}
-      >
-        <option value="desc">Descending</option>
-        <option value="asc">Ascending</option>
-      </select>
+      <div className={styles.sortdirection}>
+        <label className={styles.formLabel} htmlFor="sortDirection">
+          Order
+        </label>
+        <select
+          className={styles.formSelect}
+          id="sortDirection"
+          value={sortDirection}
+          onChange={(event) => onSortDirectionChange(event.target.value)}
+        >
+          <option className={styles.option} value="desc">
+            Descending
+          </option>
+          <option className={styles.option} value="asc">
+            Ascending
+          </option>
+        </select>
+      </div>
     </div>
   );
 }

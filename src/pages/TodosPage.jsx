@@ -12,6 +12,7 @@ import {
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { useSearchParams } from "react-router";
 import StatusFilter from "../shared/StatusFilter.jsx";
+import styles from "./TodosPage.module.css";
 
 function TodosPage() {
   const { token } = useAuth();
@@ -239,65 +240,81 @@ function TodosPage() {
   }
 
   return (
-    <div>
-      {error && (
-        <div>
-          <p>{error}</p>
-          <button onClick={() => dispatch({ type: TODO_ACTIONS.CLEAR_ERROR })}>
-            Clear Error
-          </button>
+    <div className="pageCard">
+      <div className={styles.pageContent}>
+        <div className={styles.todosHeader}>
+          {error && (
+            <div className={styles.error}>
+              <p className="errorMessage">{error}</p>
+              <button
+                className={styles.btn}
+                onClick={() => dispatch({ type: TODO_ACTIONS.CLEAR_ERROR })}
+              >
+                Clear Error
+              </button>
+            </div>
+          )}
+
+          {filterError && (
+            <div className={styles.error}>
+              <p className="errorMessage">{filterError}</p>
+              <button
+                className={styles.btn}
+                onClick={() =>
+                  dispatch({ type: TODO_ACTIONS.CLEAR_FILTER_ERROR })
+                }
+              >
+                Clear Filter Error
+              </button>
+              <button className={styles.btn} onClick={handleResetFilter}>
+                Reset Filters
+              </button>
+            </div>
+          )}
+
+          {isTodoListLoading && <p className="loadingMessage">Loading...</p>}
+
+          <SortBy
+            sortBy={sortBy}
+            sortDirection={sortDirection}
+            onSortByChange={(newSortBy) =>
+              dispatch({
+                type: TODO_ACTIONS.SET_SORT,
+                payload: { sortBy: newSortBy, sortDirection },
+              })
+            }
+            onSortDirectionChange={(newSortDirection) =>
+              dispatch({
+                type: TODO_ACTIONS.SET_SORT,
+                payload: { sortBy, sortDirection: newSortDirection },
+              })
+            }
+          />
+
+          <StatusFilter />
+
+          <FilterInput
+            filterTerm={filterTerm}
+            onFilterChange={handleFilterChange}
+          />
+
+          <TodoForm
+            onAddTodo={addTodo}
+            isOperationLoading={isOperationLoading}
+          />
         </div>
-      )}
-
-      {filterError && (
-        <div>
-          <p>{filterError}</p>
-          <button
-            onClick={() => dispatch({ type: TODO_ACTIONS.CLEAR_FILTER_ERROR })}
-          >
-            Clear Filter Error
-          </button>
-          <button onClick={handleResetFilter}>Reset Filters</button>
+        <div className={styles.todoList}>
+          <TodoList
+            todoList={todoList}
+            onCompleteTodo={completeTodo}
+            onUpdateTodo={updateTodo}
+            onDeleteTodo={deleteTodo}
+            isOperationLoading={isOperationLoading}
+            dataVersion={dataVersion}
+            statusFilter={statusFilter}
+          />
         </div>
-      )}
-
-      {isTodoListLoading && <p>Loading...</p>}
-
-      <SortBy
-        sortBy={sortBy}
-        sortDirection={sortDirection}
-        onSortByChange={(newSortBy) =>
-          dispatch({
-            type: TODO_ACTIONS.SET_SORT,
-            payload: { sortBy: newSortBy, sortDirection },
-          })
-        }
-        onSortDirectionChange={(newSortDirection) =>
-          dispatch({
-            type: TODO_ACTIONS.SET_SORT,
-            payload: { sortBy, sortDirection: newSortDirection },
-          })
-        }
-      />
-
-      <StatusFilter />
-
-      <FilterInput
-        filterTerm={filterTerm}
-        onFilterChange={handleFilterChange}
-      />
-
-      <TodoForm onAddTodo={addTodo} isOperationLoading={isOperationLoading} />
-
-      <TodoList
-        todoList={todoList}
-        onCompleteTodo={completeTodo}
-        onUpdateTodo={updateTodo}
-        onDeleteTodo={deleteTodo}
-        isOperationLoading={isOperationLoading}
-        dataVersion={dataVersion}
-        statusFilter={statusFilter}
-      />
+      </div>
     </div>
   );
 }

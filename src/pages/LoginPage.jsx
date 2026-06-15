@@ -45,7 +45,7 @@ function LoginPage() {
   return (
     <div className="pageCard">
       <form className={styles.loginForm} onSubmit={handleSubmit}>
-        <div className={styles.error}>{authError && <p>{authError}</p>}</div>
+        {authError && <p className="errorMessage">{authError}</p>}
 
         <TextInputWithLabel
           value={email}

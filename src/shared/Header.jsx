@@ -9,9 +9,7 @@ export default function Header() {
     <div className={styles.header}>
       <h1 className={styles.title}>Todo List</h1>
       <Navigation />
-      <div className={styles.logoutBtn}>
-        {isAuthenticated ? <Logoff /> : null}
-      </div>
+      {isAuthenticated ? <Logoff /> : null}
     </div>
   );
 }

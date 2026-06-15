@@ -1,14 +1,10 @@
 .header {
   background-color: var(--color-secondary);
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: space-between;
 }
 
 .title {
   align-items: center;
-}
-
-.logoutBtn {
-  background-color: var(--color-primary);
 }

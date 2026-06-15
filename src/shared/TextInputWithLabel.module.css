@@ -3,7 +3,7 @@
   flex-direction: row;
   background-color: var(--color-accent);
   border-radius: 25px;
-  padding: 3px 7px 5px 5px;
+  padding: 3px 9px 5px 4px;
 }
 
 .label {
@@ -18,5 +18,5 @@
 
 .input:focus {
   outline: none;
-  border: 2px solid var(--color-secondary);
+  border: 3px solid var(--color-secondary);
 }

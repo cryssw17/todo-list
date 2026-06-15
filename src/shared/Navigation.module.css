@@ -1,0 +1,29 @@
+.navBar {
+  display: flex;
+  flex-direction: row;
+  background-color: var(--color-primary);
+  border-radius: 10px;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+}
+
+.navLink {
+  background-color: rgba(var(--color-background-rgb), 0.15);
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  text-decoration: none;
+  color: var(--color-text);
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.navLink:hover {
+  background-color: rgba(var(--color-background-rgb), 0.3);
+}
+
+.activeLink {
+  composes: navLink;
+  font-weight: bold;
+  text-decoration: underline;
+  background-color: var(--color-secondary);
+}
