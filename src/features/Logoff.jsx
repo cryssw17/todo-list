@@ -1,19 +1,25 @@
-import {useState} from 'react';
-import { useAuth } from '../contexts/AuthContext.jsx'
+import { useState } from 'react';
+import { useNavigate } from 'react-router';
+import { useAuth } from '../contexts/AuthContext.jsx';
 
 function Logoff () {
     const [authError, setAuthError] = useState('');
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     
     const { logout } = useAuth();
+    const navigate = useNavigate();
 
     async function handleClick() {
         setIsLoggingOut(true);
+        setAuthError('');
         const logoutRequest = await logout();
-        if(!logoutRequest.success){
+        if(logoutRequest.success){
+            navigate('/login');
+        } else {
             setAuthError(logoutRequest.error);
+            setIsLoggingOut(false);
         }
-        setIsLoggingOut(false);
+        
     }
 
     return(

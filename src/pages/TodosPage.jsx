@@ -1,17 +1,23 @@
 import { useEffect, useReducer } from 'react';
-import TodoForm from './TodoForm.jsx';
-import TodoList from './TodoList.jsx';
-import SortBy from '../../shared/SortBy.jsx';
-import useDebounce from '../../utils/useDebounce.js';
-import FilterInput from '../../shared/FilterInput.jsx';
-import { TODO_ACTIONS, initialTodoState, todoReducer } from '../../reducers/todoReducer.js';
-import { useAuth } from '../../contexts/AuthContext.jsx';
+import TodoForm from '../features/Todos/TodoForm.jsx';
+import TodoList from '../features/Todos/TodoList.jsx';
+import SortBy from '../shared/SortBy.jsx';
+import useDebounce from '../utils/useDebounce.js';
+import FilterInput from '../shared/FilterInput.jsx';
+import { TODO_ACTIONS, initialTodoState, todoReducer } from '../reducers/todoReducer.js';
+import { useAuth } from '../contexts/AuthContext.jsx';
+import { useSearchParams } from 'react-router';
+import StatusFilter from '../shared/StatusFilter.jsx';
 
 function TodosPage() {
 
 const { token } = useAuth();
-
 const [state, dispatch] = useReducer(todoReducer, initialTodoState);
+const [searchParams] = useSearchParams();
+
+//Get status filter from URL, defaults to 'all'
+const statusFilter = searchParams.get('status') || 'all'
+
 const{
   todoList,
   error, 
@@ -36,7 +42,7 @@ function handleFilterChange (filterTerm) {
 
 useEffect(() => {
 (async function fetchTodos (){
- dispatch({type: TODO_ACTIONS.FETCH_START});
+ dispatch({ type: TODO_ACTIONS.FETCH_START });
   
   const paramsObject = {
     sortBy, 
@@ -51,16 +57,17 @@ useEffect(() => {
   
 
   try{
-    const resp = await fetch(`/api/tasks?${params}`, {
+    const resp = await fetch(`/api/tasks?limit=50&${params}`, {
       method: 'GET',
-      headers: {'X-CSRF-TOKEN': token},
+      headers: { 'X-CSRF-TOKEN': token },
       credentials: 'include'
     });
     const todos = await resp.json();
+    console.log(todos);
     if(resp.ok ){
       dispatch({
         type: TODO_ACTIONS.FETCH_SUCCESS,
-        payload: {todos: todos.tasks}
+        payload: { todos: todos.tasks }
       }); 
       
     } else if (resp.status === 401) {
@@ -93,21 +100,21 @@ async function addTodo(todoTitle){
 
     dispatch({
       type: TODO_ACTIONS.ADD_TODO_START,
-      payload: {newTodo},
+      payload: { newTodo },
     });
 
     try{
       const resp = await fetch('/api/tasks', {
         method: 'POST', 
-        headers: {'Content-Type': 'application/json','X-CSRF-TOKEN' : token}, 
+        headers: {'Content-Type': 'application/json','X-CSRF-TOKEN' : token }, 
         credentials: 'include',
-        body: JSON.stringify({title:todoTitle, isCompleted: false}),
+        body: JSON.stringify({ title:todoTitle, isCompleted: false }),
       });
       const savedTodoData = await resp.json();
       if(resp.ok){
         dispatch({
           type: TODO_ACTIONS.ADD_TODO_SUCCESS,
-          payload: {newTodo, savedTodoData}
+          payload: { newTodo, savedTodoData }
         });
       } else {
         throw new Error ('Failed to add todo');
@@ -127,25 +134,30 @@ async function addTodo(todoTitle){
 
 async function completeTodo(id) {
   const originalTodo = todoList.find(todo => todo.id === id);
-  let checkComplete = todoList.map(todo => (todo.id === id ? ({...todo, isCompleted: true}) : todo));
+  //toggle check box for completed tasks/ uncheck box for uncompleted (active) tasks
+  let checkComplete = todoList.map(todo => (todo.id === id ? ({...todo, isCompleted: !todo.isCompleted}) : todo));
 
   dispatch({
     type: TODO_ACTIONS.COMPLETE_TODO_START,
-    payload: {checkComplete},
+    payload: { checkComplete },
   })
 
 
   try {
     const resp = await fetch(`/api/tasks/${id}`, {
       method: 'PATCH', 
-      headers: {'Content-Type' : 'application/json', 'X-CSRF-TOKEN' : token}, 
+      headers: { 'Content-Type' : 'application/json', 'X-CSRF-TOKEN' : token }, 
       credentials: 'include', 
-      body: JSON.stringify({isCompleted: true})
+      body: JSON.stringify({ isCompleted: !originalTodo.isCompleted })
     });
+
+    const completedResp = await resp.json();
+    console.log(completedResp);
+
     if (!resp.ok) {
           throw new Error('Failed to complete todo');
         }
-      dispatch ({type: TODO_ACTIONS.COMPLETE_TODO_SUCCESS});
+      dispatch ({ type: TODO_ACTIONS.COMPLETE_TODO_SUCCESS });
   } 
   catch (error) {
     dispatch({
@@ -164,33 +176,60 @@ async function updateTodo(editedTodo) {
 
     dispatch({
       type: TODO_ACTIONS.UPDATE_TODO_START,
-      payload: {updatedTodos},
+      payload: { updatedTodos },
     })
 
     try {
       const resp = await fetch(`/api/tasks/${editedTodo.id}`, {
         method: 'PATCH', 
-        headers: {'Content-Type': 'application/json', 'X-CSRF-TOKEN': token}, 
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token }, 
         credentials: 'include', 
-        body: JSON.stringify({title: editedTodo.title, isCompleted: editedTodo.isCompleted})
+        body: JSON.stringify({ title: editedTodo.title, isCompleted: editedTodo.isCompleted })
       });
       if (!resp.ok) {
         throw new Error('Failed to update todo');
       }
-      dispatch({type: TODO_ACTIONS.UPDATE_TODO_SUCCESS});    
+      dispatch({ type: TODO_ACTIONS.UPDATE_TODO_SUCCESS });    
     }
     catch (error) {
       dispatch({
         type: TODO_ACTIONS.UPDATE_TODO_ERROR,
-        payload: {originalTodo,
-           message:`Error: ${error.name} | ${error.message}`},
+        payload: { originalTodo,
+           message:`Error: ${error.name} | ${error.message}` },
       });
     }
    
   }
 
+  async function deleteTodo(id) {
+    try {
+      dispatch({
+        type: TODO_ACTIONS.DELETE_TODO_START});
+
+      const resp = await fetch(`/api/tasks/${id}`, {
+        method: 'DELETE',
+        headers: { 'X-CSRF-TOKEN': token },
+        credentials: 'include'
+      });
+
+      if (resp.status === 401) {
+        throw new Error('Unauthorized');
+      } if (!resp.ok) {
+        throw new Error('Failed to deleted todo');
+      }
+      dispatch({ type: TODO_ACTIONS.DELETE_TODO_SUCCESS,
+        payload: {id}
+      });
+    } catch(error) {
+      dispatch({
+        type: TODO_ACTIONS.DELETE_TODO_ERROR,
+        payload: {message: `Error: ${error.name} | ${error.message}` }
+      });
+    }
+  }
+
   function handleResetFilter () {
-    dispatch({type: TODO_ACTIONS.RESET_FILTERS});
+    dispatch({ type: TODO_ACTIONS.RESET_FILTERS });
   }
 
   return (
@@ -198,13 +237,13 @@ async function updateTodo(editedTodo) {
       {error && 
        <div>
         <p>{error}</p>
-        <button onClick={()=> dispatch({type: TODO_ACTIONS.CLEAR_ERROR})}>Clear Error</button>
+        <button onClick={()=> dispatch({ type: TODO_ACTIONS.CLEAR_ERROR })}>Clear Error</button>
         </div>}
 
     {filterError && 
          <div>
           <p>{filterError}</p>
-          <button onClick={()=>dispatch({type: TODO_ACTIONS.CLEAR_FILTER_ERROR})}>Clear Filter Error</button>
+          <button onClick={()=>dispatch({ type: TODO_ACTIONS.CLEAR_FILTER_ERROR })}>Clear Filter Error</button>
           <button onClick={handleResetFilter}>Reset Filters</button>
          </div>}
 
@@ -216,13 +255,15 @@ async function updateTodo(editedTodo) {
         onSortByChange={(newSortBy) => 
           dispatch({
           type: TODO_ACTIONS.SET_SORT,
-          payload: {sortBy: newSortBy, sortDirection}
+          payload: { sortBy: newSortBy, sortDirection }
         })}
         onSortDirectionChange={(newSortDirection) => 
           dispatch({
           type: TODO_ACTIONS.SET_SORT,
-          payload: {sortBy, sortDirection: newSortDirection}
+          payload: { sortBy, sortDirection: newSortDirection }
         })} />
+
+      <StatusFilter />
 
       <FilterInput 
         filterTerm={filterTerm}
@@ -236,8 +277,11 @@ async function updateTodo(editedTodo) {
         todoList={todoList}
         onCompleteTodo={completeTodo}
         onUpdateTodo={updateTodo}
+        onDeleteTodo={deleteTodo}
         isOperationLoading={isOperationLoading}
-        dataVersion={dataVersion}/>
+        dataVersion={dataVersion}
+        statusFilter={statusFilter}
+      />
 
     </div>
   )

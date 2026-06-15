@@ -19,6 +19,11 @@ export const TODO_ACTIONS = {
     UPDATE_TODO_SUCCESS: 'UPDATE_TODO_SUCCESS',
     UPDATE_TODO_ERROR: 'UPDATE_TODO_ERROR',
 
+    //delete todo operations
+    DELETE_TODO_START: 'DELETE_TODO_START',
+    DELETE_TODO_SUCCESS: 'DELETE_TODO_SUCCESS',
+    DELETE_TODO_ERROR: 'DELETE_TODO_ERROR',
+
     //UI operations
     SET_SORT: 'SET_SORT',
     SET_FILTER: 'SET_FILTER',
@@ -142,6 +147,29 @@ export function todoReducer(state, action) {
                 todoList: state.todoList.map((todo) => todo.id === action.payload.originalTodo.id ? action.payload.originalTodo : todo),
                 error: action.payload.message
             };
+        
+        //Delete todo actions
+        case TODO_ACTIONS.DELETE_TODO_START:
+            return {
+                ...state,
+                isOperationLoading: true,
+                error: ''
+            };
+        
+        case TODO_ACTIONS.DELETE_TODO_SUCCESS:
+            return{
+                ...state,
+                isOperationLoading: false,
+                todoList: state.todoList.filter((todo) => todo.id !== action.payload.id)
+            };
+
+        case TODO_ACTIONS.DELETE_TODO_ERROR:
+            return{
+                ...state,
+                isOperationLoading: false,
+                error: action.payload.message
+            };
+        
 
         //UI operations
         case TODO_ACTIONS.SET_SORT:
