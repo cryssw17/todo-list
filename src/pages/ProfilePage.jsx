@@ -63,22 +63,24 @@ function ProfilePage() {
 
   return (
     <div className="pageCard">
-      <div className={styles.userInfo}>
-        <h4>Username: {username} </h4>
-        <h4>Status: Active</h4>
-      </div>
+      <div className={styles.profileContent}>
+        <h1 className="pageTitle">Profile</h1>
+        <div className={styles.userInfo}>
+          <h4>Username: {username} </h4>
+          <h4>Status: Active</h4>
+        </div>
 
-      <h2>Todo Statistics</h2>
+        {loading && <p className="loadingMessage">Loading Stats...</p>}
 
-      {loading && <p className="loadingMessage">Loading Stats...</p>}
+        {error && <p className="errorMessage">{error}</p>}
 
-      {error && <p className="errorMessage">{error}</p>}
-
-      <div className={styles.stats}>
-        <p>Active Todos: {todoStats.active} </p>
-        <p>Completed Todos: {todoStats.completed} </p>
-        <p>Total Todos: {todoStats.total}</p>
-        <p>Percentage of todos completed: {percentage} %</p>
+        <div className={styles.stats}>
+          <h2>Todo Statistics</h2>
+          <p>Active Todos: {todoStats.active} </p>
+          <p>Completed Todos: {todoStats.completed} </p>
+          <p>Total Todos: {todoStats.total}</p>
+          <p>Percentage of todos completed: {percentage} %</p>
+        </div>
       </div>
     </div>
   );

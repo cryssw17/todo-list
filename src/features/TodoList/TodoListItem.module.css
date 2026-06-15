@@ -1,0 +1,34 @@
+.todoItem {
+  /* background-color: rgba(146, 81, 81, 0.751); */
+  /* backdrop-filter: blur(8px); */
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-sm);
+}
+
+.todo {
+  color: var(--color-text);
+}
+
+.completedTodo {
+  composes: todo;
+  text-decoration: line-through;
+  color: rgba(44, 43, 43, 0.425);
+}
+
+.btn {
+  background-color: var(--color-primary);
+}
+
+.deleteBtn {
+  background-color: red;
+}
+
+/* for completed todos */
+.checkbox {
+  accent-color: rgba(0, 51, 51, 0.763);
+}
+
+.editingTodo {
+  display: flex;
+  flex-direction: row;
+}

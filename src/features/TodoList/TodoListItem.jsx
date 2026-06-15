@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import TextInputWithLabel from "../../shared/TextInputWithLabel.jsx";
 import { isValidTodoTitle } from "../../utils/todoValidation.js";
+import styles from "./TodoListItem.module.css";
 
 function TodoListItem({
   todo,
@@ -41,17 +42,18 @@ function TodoListItem({
     <li>
       <form>
         {isEditing ? (
-          <>
+          <div className={styles.editingTodo}>
             <TextInputWithLabel
               value={workingTitle}
               onChange={handleEdit}
               elementId="updateTodo"
               labelText="Update todo:"
             />
-            <button type="button" onClick={handleCancel}>
+            <button className={styles.btn} type="button" onClick={handleCancel}>
               Cancel
             </button>
             <button
+              className={styles.btn}
               type="button"
               onClick={handleUpdate}
               disabled={!isValidTodoTitle(workingTitle) || isOperationLoading}
@@ -59,25 +61,32 @@ function TodoListItem({
               Update
             </button>
             <button
+              className={styles.deleteBtn}
               type="button"
               onClick={handleDelete}
               disabled={isOperationLoading}
             >
               Delete
             </button>
-          </>
+          </div>
         ) : (
-          <>
+          <div className={styles.todoItem}>
             <label>
               <input
+                className={styles.checkbox}
                 type="checkbox"
                 checked={todo.isCompleted}
                 onChange={() => onCompleteTodo(todo.id)}
                 disabled={isOperationLoading}
               />
             </label>
-            <span onClick={() => setIsEditing(true)}>{todo.title}</span>
-          </>
+            <span
+              className={todo.isCompleted ? styles.completedTodo : styles.todo}
+              onClick={() => setIsEditing(true)}
+            >
+              {todo.title}
+            </span>
+          </div>
         )}
       </form>
     </li>

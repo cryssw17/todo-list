@@ -7,19 +7,19 @@ function SortBy({
   onSortDirectionChange,
 }) {
   return (
-    <div className={styles.sort}>
-      <div className={styles.sortby}>
-        <label className={styles.formLabel} htmlFor="sortBy">
-          Sort by
+    <div className="formGroup">
+      <div className={styles.sortGroup}>
+        <label className="formLabel" htmlFor="sortBy">
+          Sort by:
         </label>
         <select
-          className={styles.formSelect}
+          className="formSelect"
           id="sortBy"
           value={sortBy}
           onChange={(event) => onSortByChange(event.target.value)}
         >
           <option className={styles.option} value="createdDate">
-            Creation Date
+            Created Date
           </option>
           <option className={styles.option} value="title">
             Title
@@ -27,12 +27,12 @@ function SortBy({
         </select>
       </div>
 
-      <div className={styles.sortdirection}>
-        <label className={styles.formLabel} htmlFor="sortDirection">
-          Order
+      <div className={styles.sortGroup}>
+        <label className="formLabel" htmlFor="sortDirection">
+          Order:
         </label>
         <select
-          className={styles.formSelect}
+          className="formSelect"
           id="sortDirection"
           value={sortDirection}
           onChange={(event) => onSortDirectionChange(event.target.value)}

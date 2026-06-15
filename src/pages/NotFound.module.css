@@ -1,0 +1,22 @@
+.pageContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.linkBar {
+  display: flex;
+  /* justify-content: space-between; */
+  gap: var(--spacing-md);
+}
+
+.linkItem {
+  background-color: var(--color-accent);
+  color: var(--color-secondary);
+  font-weight: bold;
+  border-radius: 5px;
+  font-weight: 500;
+}
+
+.linkItem:hover {
+  background-color: rgba(var(--color-background-rgb), 0.3);
+}

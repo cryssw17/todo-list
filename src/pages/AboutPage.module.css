@@ -1,0 +1,11 @@
+.features {
+  background-color: rgba(var(--color-accent-rgb), 0.8);
+}
+
+.tech {
+  background-color: rgba(var(--color-accent-rgb), 0.8);
+}
+
+h2 {
+  color: var(--color-background);
+}

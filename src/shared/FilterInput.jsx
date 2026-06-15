@@ -2,12 +2,12 @@ import styles from "./FilterInput.module.css";
 
 function FilterInput({ filterTerm, onFilterChange }) {
   return (
-    <div className={styles.filter}>
-      <label className={styles.formLabel} htmlFor="filterInput">
+    <div className="formGroup">
+      <label className="formLabel" htmlFor="filterInput">
         Search todos:
       </label>
       <input
-        className={styles.formInput}
+        className="formInput"
         id="filterInput"
         type="text"
         value={filterTerm}

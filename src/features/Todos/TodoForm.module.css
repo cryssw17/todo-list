@@ -1,0 +1,14 @@
+.todoForm {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.todoBtn {
+  padding: 0.5rem 5rem;
+  background-color: var(--color-secondary);
+  border-radius: 0 7px 7px 0;
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-sm);
+  color: black;
+}

@@ -16,12 +16,12 @@ function StatusFilter() {
   };
 
   return (
-    <div className={styles.status}>
-      <label className={styles.formLabel} htmlFor="statusFilter">
+    <div className="formGroup">
+      <label className="formLabel" htmlFor="statusFilter">
         Show:
       </label>
       <select
-        className={styles.formSelect}
+        className="formSelect"
         id="statusFilter"
         value={currentStatus}
         onChange={(event) => handleStatusChange(event.target.value)}

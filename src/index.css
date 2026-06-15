@@ -36,8 +36,13 @@ body {
   height: 100vh;
 }
 
+.pageTitle {
+  background-color: var(--color-secondary);
+}
+
 .pageCard {
-  background-color: var(--color-primary);
+  background-color: rgba(var(--color-primary-rgb), 1);
+  backdrop-filter: blur(3px);
   margin: 5em auto;
   padding: var(--spacing-lg);
   width: 80%;
@@ -46,17 +51,44 @@ body {
 
 .errorMessage {
   color: var(--color-alert);
-  background-color: lightpink;
+  background-color: white;
   border-radius: 6px;
-  padding: 0.5rem, 0.75rem;
+  padding: 5px;
+  width: 70%;
 }
 
 .loadingMessage {
   color: var(--color-text);
 }
 
-/* .formLabel {} */
+.formGroup {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 1;
+  background-color: rgba(var(--color-accent-rgb), 1);
+  /* backdrop-filter: blur(30px); */
+  border-radius: 7px 0 0 7px;
+  padding: 3px 9px 5px 10px;
+  margin-bottom: var(--spacing-sm);
+  gap: var(--spacing-sm);
+}
+
+.formLabel {
+  font-weight: 500;
+  color: white;
+}
 
 /* .formSelect{} */
 
-/* .formInput{} */
+.formInput,
+.formSelect {
+  background-color: white;
+  border-radius: 25px;
+}
+
+.formInput:focus,
+.formSelect:focus {
+  outline: none;
+  border: 3px solid var(--color-secondary);
+}

@@ -2,7 +2,7 @@ import styles from "./AboutPage.module.css";
 function AboutPage() {
   return (
     <div className="pageCard">
-      <h1>About</h1>
+      <h1 className="pagetitle">About</h1>
       <div className={styles.sections}>
         <div className={styles.features}>
           <h2>App Features</h2>
