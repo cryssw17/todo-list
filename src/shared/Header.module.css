@@ -5,6 +5,9 @@
   justify-content: space-between;
 }
 
-.title {
+.headerTitle {
   align-items: center;
+  background-color: rgba(var(--color-accent-rgb), 0.7);
+  padding: var(--spacing-sm);
+  border-radius: 5px;
 }

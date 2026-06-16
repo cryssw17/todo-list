@@ -8,22 +8,30 @@ function NotFound() {
   return (
     <div className="pageCard">
       <div className={styles.pageContent}>
-        <h2>404: Not Found</h2>
+        <h2 className="pageTitle">404: Not Found</h2>
         <p className="errorMessage">Invalid path: {pathname}</p>
-        <div className={styles.linkBar}>
-          <Link className={styles.linkItem} to="/">
-            Go Home
-          </Link>
-          <Link className={styles.linkItem} to="/todos">
-            Go to Todos
-          </Link>
-          <Link className={styles.linkItem} to="/about">
-            Go to About
-          </Link>
-          <Link className={styles.linkItem} to="/profile">
-            Go to Profile
-          </Link>
-        </div>
+        <ul className={styles.linkBar}>
+          <li>
+            <Link to="/" className={styles.linkItem}>
+              Go Home
+            </Link>
+          </li>
+          <li>
+            <Link to="/todos" className={styles.linkItem}>
+              Go to Todos
+            </Link>
+          </li>
+          <li>
+            <Link to="/about" className={styles.linkItem}>
+              Go to About
+            </Link>
+          </li>
+          <li>
+            <Link to="/profile" className={styles.linkItem}>
+              Go to Profile
+            </Link>
+          </li>
+        </ul>
       </div>
     </div>
   );

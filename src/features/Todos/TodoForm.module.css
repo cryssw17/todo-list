@@ -12,3 +12,11 @@
   margin-bottom: var(--spacing-sm);
   color: black;
 }
+
+.todoBtn:hover {
+  filter: brightness(0.8);
+}
+
+.todoBtn:active {
+  transform: translateY(4px);
+}

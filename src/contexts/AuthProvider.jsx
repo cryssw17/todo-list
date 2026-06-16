@@ -3,7 +3,7 @@ import { AuthContext } from "./AuthContext.jsx";
 
 export function AuthProvider({ children }) {
   //state for authentication
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [token, setToken] = useState("");
 
   //login functionality
@@ -21,7 +21,7 @@ export function AuthProvider({ children }) {
 
       //success login: update authentication state
       if (resp.status === 200 && loginData.name && loginData.csrfToken) {
-        setEmail(loginData.name);
+        setName(loginData.name);
         setToken(loginData.csrfToken);
         return { success: true };
       } else {
@@ -43,7 +43,7 @@ export function AuthProvider({ children }) {
   const logout = async () => {
     //check if token is present, clear state if not
     if (!token) {
-      setEmail("");
+      setName("");
       setToken("");
       return { success: true };
     } else {
@@ -59,11 +59,11 @@ export function AuthProvider({ children }) {
         const logoutData = await resp.json();
 
         if (resp.status === 200) {
-          setEmail("");
+          setName("");
           setToken("");
           return { success: true };
         } else {
-          setEmail("");
+          setName("");
           setToken("");
           return {
             success: false,
@@ -71,7 +71,7 @@ export function AuthProvider({ children }) {
           };
         }
       } catch (error) {
-        setEmail("");
+        setName("");
         setToken("");
         return {
           success: false,
@@ -83,7 +83,7 @@ export function AuthProvider({ children }) {
 
   //context value object
   const value = {
-    email,
+    name,
     token, //CSRF token for API requests
     isAuthenticated: !!token, //Computed boolean for auth status
     login, //authenicates user

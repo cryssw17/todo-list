@@ -3,8 +3,8 @@ import { useAuth } from "../contexts/AuthContext";
 import styles from "./ProfilePage.module.css";
 
 function ProfilePage() {
-  const { email, token } = useAuth();
-  const username = email;
+  const { name, token } = useAuth();
+  const username = name;
 
   const [loading, setLoading] = useState(false);
   const [todoStats, setTodoStats] = useState({

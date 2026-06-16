@@ -16,3 +16,7 @@
   filter: brightness(0.8);
   color: white;
 }
+
+.btn:active {
+  transform: translateY(4px);
+}

@@ -107,7 +107,7 @@ export function todoReducer(state, action) {
       return {
         ...state,
         isOperationLoading: true,
-        todoList: action.payload.checkComplete,
+        todoList: action.payload,
         error: "",
       };
 
@@ -135,7 +135,7 @@ export function todoReducer(state, action) {
       return {
         ...state,
         isOperationLoading: true,
-        todoList: action.payload.updatedTodos,
+        todoList: action.payload,
         error: "",
       };
 

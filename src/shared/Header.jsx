@@ -7,7 +7,7 @@ export default function Header() {
   const { isAuthenticated } = useAuth();
   return (
     <div className={styles.header}>
-      <h1 className={styles.title}>Todo List</h1>
+      <h1 className={styles.headerTitle}>Todo List</h1>
       <Navigation />
       {isAuthenticated ? <Logoff /> : null}
     </div>

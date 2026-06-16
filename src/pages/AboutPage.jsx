@@ -2,10 +2,10 @@ import styles from "./AboutPage.module.css";
 function AboutPage() {
   return (
     <div className="pageCard">
-      <h1 className="pagetitle">About</h1>
+      <h1 className="pageTitle">About</h1>
       <div className={styles.sections}>
         <div className={styles.features}>
-          <h2>App Features</h2>
+          <h2 className={styles.sectionTitle}>App Features</h2>
           <ul>
             <li>
               Users are able to add, edit, and delete todos, as well as mark
@@ -18,7 +18,7 @@ function AboutPage() {
           </ul>
         </div>
         <div className={styles.tech}>
-          <h2>Technologies Used</h2>
+          <h2 className={styles.sectionTitle}>Technologies Used</h2>
           <ul>
             <li>Vite</li>
             <li>React</li>

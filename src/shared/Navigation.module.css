@@ -25,5 +25,12 @@
   composes: navLink;
   font-weight: bold;
   text-decoration: underline;
-  background-color: var(--color-secondary);
+  background-color: var(--color-accent);
+}
+
+.navList {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  padding: 0;
 }

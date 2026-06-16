@@ -143,7 +143,7 @@ function TodosPage() {
 
     dispatch({
       type: TODO_ACTIONS.COMPLETE_TODO_START,
-      payload: { checkComplete },
+      payload: checkComplete,
     });
 
     try {
@@ -180,7 +180,7 @@ function TodosPage() {
 
     dispatch({
       type: TODO_ACTIONS.UPDATE_TODO_START,
-      payload: { updatedTodos },
+      payload: updatedTodos,
     });
 
     try {
