@@ -18,12 +18,8 @@ function SortBy({
           value={sortBy}
           onChange={(event) => onSortByChange(event.target.value)}
         >
-          <option className={styles.option} value="createdAt">
-            Created At
-          </option>
-          <option className={styles.option} value="title">
-            Title
-          </option>
+          <option value="createdAt">Created At</option>
+          <option value="title">Title</option>
         </select>
       </div>
 

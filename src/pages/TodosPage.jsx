@@ -17,7 +17,7 @@ import styles from "./TodosPage.module.css";
 function TodosPage() {
   const { token } = useAuth();
   const [state, dispatch] = useReducer(todoReducer, initialTodoState);
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   //Get status filter from URL, defaults to 'all'
   const statusFilter = searchParams.get("status") || "all";
@@ -65,7 +65,6 @@ function TodosPage() {
           credentials: "include",
         });
         const todos = await resp.json();
-        console.log(todos);
         if (resp.ok) {
           dispatch({
             type: TODO_ACTIONS.FETCH_SUCCESS,
@@ -76,7 +75,7 @@ function TodosPage() {
         } else {
           throw new Error("Failed to load tasks");
         }
-      } catch (error) {
+      } catch {
         const isFilterError =
           debouncedFilterTerm ||
           sortBy !== "createdDate" ||
@@ -86,8 +85,8 @@ function TodosPage() {
           type: TODO_ACTIONS.FETCH_ERROR,
           payload: {
             message: isFilterError
-              ? `Error filtering/sorting todos: ${error.message}`
-              : `Error fetching todos: ${error.message}`,
+              ? `Error filtering/sorting todos: Please try again.`
+              : `Error fetching todos: Please try again.`,
             isFilterError,
           },
         });
@@ -123,12 +122,12 @@ function TodosPage() {
       } else {
         throw new Error("Failed to add todo");
       }
-    } catch (error) {
+    } catch {
       dispatch({
         type: TODO_ACTIONS.ADD_TODO_ERROR,
         payload: {
           newTodo,
-          message: `Error: ${error.name} | ${error.message}`,
+          message: "Failed to add todo. Please try again.",
         },
       });
     }
@@ -154,19 +153,16 @@ function TodosPage() {
         body: JSON.stringify({ isCompleted: !originalTodo.isCompleted }),
       });
 
-      const completedResp = await resp.json();
-      console.log(completedResp);
-
       if (!resp.ok) {
         throw new Error("Failed to complete todo");
       }
       dispatch({ type: TODO_ACTIONS.COMPLETE_TODO_SUCCESS });
-    } catch (error) {
+    } catch {
       dispatch({
         type: TODO_ACTIONS.COMPLETE_TODO_ERROR,
         payload: {
           originalTodo,
-          message: `Error: ${error.name} | ${error.message}`,
+          message: "Failed to change todo status. Please try again.",
         },
       });
     }
@@ -197,12 +193,12 @@ function TodosPage() {
         throw new Error("Failed to update todo");
       }
       dispatch({ type: TODO_ACTIONS.UPDATE_TODO_SUCCESS });
-    } catch (error) {
+    } catch {
       dispatch({
         type: TODO_ACTIONS.UPDATE_TODO_ERROR,
         payload: {
           originalTodo,
-          message: `Error: ${error.name} | ${error.message}`,
+          message: "Failed to update todo. Please try again.",
         },
       });
     }
@@ -227,16 +223,17 @@ function TodosPage() {
         throw new Error("Failed to deleted todo");
       }
       dispatch({ type: TODO_ACTIONS.DELETE_TODO_SUCCESS, payload: { id } });
-    } catch (error) {
+    } catch {
       dispatch({
         type: TODO_ACTIONS.DELETE_TODO_ERROR,
-        payload: { message: `Error: ${error.name} | ${error.message}` },
+        payload: { message: "Failed to delete todo. Please try again. " },
       });
     }
   }
 
   function handleResetFilter() {
     dispatch({ type: TODO_ACTIONS.RESET_FILTERS });
+    setSearchParams({});
   }
 
   return (

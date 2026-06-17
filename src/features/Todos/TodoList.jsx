@@ -12,10 +12,6 @@ function TodoList({
   statusFilter = "active", //setting default status to active todos
 }) {
   const filteredTodoList = useMemo(() => {
-    console.log(
-      `Recalculating filtered todos (v${dataVersion}) - Status: ${statusFilter}`,
-    );
-
     let filteredTodos = [];
     switch (statusFilter) {
       case "completed":

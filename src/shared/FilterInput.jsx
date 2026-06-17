@@ -1,5 +1,3 @@
-import styles from "./FilterInput.module.css";
-
 function FilterInput({ filterTerm, onFilterChange }) {
   return (
     <div className="formGroup">
@@ -13,6 +11,7 @@ function FilterInput({ filterTerm, onFilterChange }) {
         value={filterTerm}
         onChange={(e) => onFilterChange(e.target.value)}
         placeholder="Search by title..."
+        maxLength="255"
       ></input>
     </div>
   );

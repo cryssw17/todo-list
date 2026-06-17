@@ -10,6 +10,7 @@ function TextInputWithLabel(
     type = "text",
     required = false,
     placeholder,
+    maxLength,
   },
   ref,
 ) {
@@ -27,6 +28,7 @@ function TextInputWithLabel(
         value={value}
         required={required}
         placeholder={placeholder}
+        maxLength={maxLength}
       />
     </div>
   );

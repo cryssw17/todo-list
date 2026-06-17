@@ -1,8 +1,5 @@
 .sortGroup {
   display: flex;
   gap: var(--spacing-sm);
+  align-items: center;
 }
-
-/* .option {
-  color: var(--color-accent);
-} */

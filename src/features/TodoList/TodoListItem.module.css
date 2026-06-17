@@ -1,34 +1,97 @@
 .todoItem {
-  /* background-color: rgba(146, 81, 81, 0.751); */
-  /* backdrop-filter: blur(8px); */
-  gap: var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
   margin-bottom: var(--spacing-sm);
+  padding: var(--spacing-sm) 0;
 }
 
+/* Accessibility: removes default button styles so todo title will read as text  */
 .todo {
   color: var(--color-text);
+  cursor: pointer;
+  flex: 1;
+
+  background: none;
+  border: none;
+  font-size: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
 .completedTodo {
   composes: todo;
   text-decoration: line-through;
-  color: rgba(44, 43, 43, 0.425);
+  color: rgba(44, 43, 43, 0.7);
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .btn {
+  border-radius: 5px;
+  padding: 5px 1rem;
+  font-size: var(--font-size-base);
+  align-self: center;
+}
+
+.btn:hover {
+  filter: brightness(0.8);
+}
+
+.cancelBtn {
+  composes: btn;
+  background-color: var(--color-accent);
+
+  /*darker hue of primary color for better visibility */
+  color: rgb(2, 77, 77);
+}
+
+.updateBtn {
+  composes: btn;
   background-color: var(--color-primary);
+  color: white;
 }
 
 .deleteBtn {
-  background-color: red;
+  composes: btn;
+  background-color: var(--color-alert);
+  color: white;
 }
 
 /* for completed todos */
 .checkbox {
   accent-color: rgba(0, 51, 51, 0.763);
+  cursor: pointer;
 }
 
 .editingTodo {
   display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: var(--spacing-sm);
+}
+
+.btnGroup {
+  display: flex;
   flex-direction: row;
+  gap: var(--spacing-sm);
+  justify-content: flex-start;
+}
+
+@media (min-width: 768px) {
+  .editingTodo {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .editingTodo > div {
+    flex: 1;
+  }
+
+  .btnGroup {
+    flex-shrink: 0;
+  }
 }

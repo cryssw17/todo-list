@@ -14,7 +14,11 @@ function RequireAuth({ children }) {
     }
   }, [isAuthenticated, navigate, location]);
 
-  return <>{isAuthenticated ? children : <p>Redirecting to Login...</p>}</>;
+  if (!isAuthenticated) {
+    return <p>Redirecting to Login...</p>;
+  }
+
+  return <>{children} </>;
 }
 
 export default RequireAuth;

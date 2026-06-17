@@ -28,13 +28,13 @@ export function AuthProvider({ children }) {
         //fail login: return error
         return {
           success: false,
-          error: `Authentication failed: ${loginData?.message}`,
+          error: "Authentication failed: Invalid credentials",
         };
       }
-    } catch (error) {
+    } catch {
       return {
         success: false,
-        error: `Network error during login: ${error.message}`,
+        error: "Network error during login. Please try again.",
       };
     }
   };
@@ -70,12 +70,12 @@ export function AuthProvider({ children }) {
             error: `Logout failed: ${logoutData.message}`,
           };
         }
-      } catch (error) {
+      } catch {
         setName("");
         setToken("");
         return {
           success: false,
-          error: `Network error during logout: ${error.message}`,
+          error: "Network error during logout. Please try again",
         };
       }
     }

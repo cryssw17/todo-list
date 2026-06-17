@@ -66,8 +66,14 @@ function ProfilePage() {
       <div className={styles.profileContent}>
         <h1 className="pageTitle">Profile</h1>
         <div className={styles.userInfo}>
-          <h4>Username: {username} </h4>
-          <h4>Status: Active</h4>
+          <div className={styles.infoItem}>
+            <span className={styles.label}>Username: </span>
+            <span className={styles.value}>{username} </span>
+          </div>
+          <div className={styles.infoItem}>
+            <span className={styles.label}>Status: </span>
+            <span className={styles.value}> Active</span>
+          </div>
         </div>
 
         {loading && <p className="loadingMessage">Loading Stats...</p>}
@@ -75,11 +81,13 @@ function ProfilePage() {
         {error && <p className="errorMessage">{error}</p>}
 
         <div className={styles.stats}>
-          <h2>Todo Statistics</h2>
-          <p>Active Todos: {todoStats.active} </p>
-          <p>Completed Todos: {todoStats.completed} </p>
-          <p>Total Todos: {todoStats.total}</p>
-          <p>Percentage of todos completed: {percentage} %</p>
+          <h2 className={styles.statsTitle}>Todo Statistics</h2>
+          <div className={styles.statsGrid}>
+            <p>Active Todos: {todoStats.active} </p>
+            <p>Completed Todos: {todoStats.completed} </p>
+            <p>Total Todos: {todoStats.total}</p>
+            <p>Percentage completed: {percentage} %</p>
+          </div>
         </div>
       </div>
     </div>

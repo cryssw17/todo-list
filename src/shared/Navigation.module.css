@@ -1,15 +1,15 @@
 .navBar {
+  background-color: var(--color-primary);
   display: flex;
   flex-direction: row;
-  background-color: var(--color-primary);
   border-radius: 10px;
   gap: var(--spacing-sm);
-  padding: var(--spacing-sm);
+  padding: 1.5rem;
 }
 
 .navLink {
   background-color: rgba(var(--color-background-rgb), 0.15);
-  padding: 0.5rem 1rem;
+  padding: 0.9rem 1rem;
   border-radius: 5px;
   text-decoration: none;
   color: var(--color-text);
@@ -18,7 +18,7 @@
 }
 
 .navLink:hover {
-  background-color: rgba(var(--color-background-rgb), 0.3);
+  background-color: rgba(var(--color-background-rgb), 0.8);
 }
 
 .activeLink {
@@ -29,8 +29,8 @@
 }
 
 .navList {
-  list-style: none;
   display: flex;
+  flex-wrap: wrap;
+  list-style: none;
   gap: 1rem;
-  padding: 0;
 }

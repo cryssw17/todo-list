@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import TextInputWithLabel from "../../shared/TextInputWithLabel.jsx";
 import { isValidTodoTitle } from "../../utils/todoValidation.js";
 import styles from "./TodoListItem.module.css";
+import DOMPurify from "dompurify";
 
 function TodoListItem({
   todo,
@@ -12,6 +13,7 @@ function TodoListItem({
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [workingTitle, setWorkingTitle] = useState(todo.title);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     setWorkingTitle(todo.title);
@@ -30,7 +32,22 @@ function TodoListItem({
     if (!isEditing) {
       return;
     }
-    onUpdateTodo({ ...todo, title: workingTitle });
+    if (!isValidTodoTitle(workingTitle)) {
+      setError("No todo entered. Please try again.");
+      return;
+    }
+
+    if (workingTitle.trim().length > 255) {
+      setError("Todo cannot exceed 255 characters.");
+      return;
+    }
+
+    const sanitizedWorkingTitle = DOMPurify.sanitize(workingTitle.trim(), {
+      ALLOWED_TAGS: [],
+      ALLOWED_ATTR: [],
+    });
+
+    onUpdateTodo({ ...todo, title: sanitizedWorkingTitle });
     setIsEditing(false);
   }
 
@@ -41,6 +58,7 @@ function TodoListItem({
   return (
     <li>
       <form>
+        {error && <p className="errorMessage">{error}</p>}
         {isEditing ? (
           <div className={styles.editingTodo}>
             <TextInputWithLabel
@@ -48,26 +66,33 @@ function TodoListItem({
               onChange={handleEdit}
               elementId="updateTodo"
               labelText="Update todo:"
+              maxLength="255"
             />
-            <button className={styles.btn} type="button" onClick={handleCancel}>
-              Cancel
-            </button>
-            <button
-              className={styles.btn}
-              type="button"
-              onClick={handleUpdate}
-              disabled={!isValidTodoTitle(workingTitle) || isOperationLoading}
-            >
-              Update
-            </button>
-            <button
-              className={styles.deleteBtn}
-              type="button"
-              onClick={handleDelete}
-              disabled={isOperationLoading}
-            >
-              Delete
-            </button>
+            <div className={styles.btnGroup}>
+              <button
+                className={styles.cancelBtn}
+                type="button"
+                onClick={handleCancel}
+              >
+                Cancel
+              </button>
+              <button
+                className={styles.updateBtn}
+                type="button"
+                onClick={handleUpdate}
+                disabled={!isValidTodoTitle(workingTitle) || isOperationLoading}
+              >
+                Update
+              </button>
+              <button
+                className={styles.deleteBtn}
+                type="button"
+                onClick={handleDelete}
+                disabled={isOperationLoading}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         ) : (
           <div className={styles.todoItem}>
@@ -80,12 +105,13 @@ function TodoListItem({
                 disabled={isOperationLoading}
               />
             </label>
-            <span
+            <button
               className={todo.isCompleted ? styles.completedTodo : styles.todo}
               onClick={() => setIsEditing(true)}
+              type="button"
             >
               {todo.title}
-            </span>
+            </button>
           </div>
         )}
       </form>

@@ -1,7 +1,7 @@
 .logoutBtn {
-  padding: 0.25rem 0.35rem;
   background-color: var(--color-primary);
   border-radius: 7px;
+  padding: 0.25rem 1em;
   font-size: var(--font-size-base);
 }
 
