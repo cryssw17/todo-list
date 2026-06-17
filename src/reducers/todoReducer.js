@@ -37,7 +37,7 @@ export const initialTodoState = {
   error: "",
   isTodoListLoading: true,
   isOperationLoading: false,
-  sortBy: "createdDate",
+  sortBy: "createdAt",
   sortDirection: "asc",
   filterTerm: "",
   dataVersion: 0,

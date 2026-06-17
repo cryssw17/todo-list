@@ -31,7 +31,7 @@
   filter: brightness(0.7);
 }
 
-@media (min-width: 1170px) {
+@media (min-width: 1024px) {
   .pageContent {
     flex-direction: row;
     align-items: flex-start;

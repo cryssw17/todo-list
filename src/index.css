@@ -39,13 +39,14 @@ body {
   font-size: var(--font-size-base);
   height: 100vh;
   overflow-x: hidden; /*prevent horizontal scrolling */
+  padding-bottom: 4rem;
 }
 
 .pageTitle {
   background-color: var(--color-secondary);
   text-align: center;
   border-radius: 5px;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
 }
 
 .pageCard {
@@ -72,10 +73,6 @@ body {
     margin: 4em auto;
     padding: var(--spacing-lg);
     width: 85%;
-  }
-
-  .errorMessage {
-    width: 50%;
   }
 }
 

@@ -40,6 +40,7 @@ function TodoForm({ onAddTodo, isOperationLoading }) {
 
   function handleChange(event) {
     setWorkingTodoTitle(event.target.value);
+    setError("");
   }
 
   return (
@@ -53,12 +54,11 @@ function TodoForm({ onAddTodo, isOperationLoading }) {
         elementId="todoTitle"
         labelText="Todo: "
         placeholder="Add a new todo"
-        maxLength="255"
       />
       <button
         className={styles.todoBtn}
         type="submit"
-        disabled={!isValidTodoTitle(workingTodoTitle) || isOperationLoading}
+        disabled={isOperationLoading}
       >
         Add Todo
       </button>

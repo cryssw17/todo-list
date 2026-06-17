@@ -1,5 +1,4 @@
 import { forwardRef } from "react";
-import styles from "./TextInputWithLabel.module.css";
 
 function TextInputWithLabel(
   {
