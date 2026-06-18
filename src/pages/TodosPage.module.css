@@ -38,11 +38,11 @@
   }
 
   .todosHeader {
-    width: 300px;
+    width: 40%;
     flex-shrink: 0;
   }
 
-  .todosList {
+  .todoList {
     flex: 1;
   }
 }

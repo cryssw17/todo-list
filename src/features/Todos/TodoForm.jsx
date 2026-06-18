@@ -20,8 +20,8 @@ function TodoForm({ onAddTodo, isOperationLoading }) {
       return;
     }
 
-    if (workingTodoTitle.trim().length > 255) {
-      setError("Todo cannot exceed 255 characters.");
+    if (workingTodoTitle.trim().length > 70) {
+      setError("Todo cannot exceed 70 characters.");
       return;
     }
 

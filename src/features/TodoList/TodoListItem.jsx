@@ -37,8 +37,8 @@ function TodoListItem({
       return;
     }
 
-    if (workingTitle.trim().length > 255) {
-      setError("Todo cannot exceed 255 characters.");
+    if (workingTitle.trim().length > 70) {
+      setError("Todo cannot exceed 70 characters.");
       return;
     }
 
@@ -66,7 +66,7 @@ function TodoListItem({
               onChange={handleEdit}
               elementId="updateTodo"
               labelText="Update todo:"
-              maxLength="255"
+              maxLength="70"
             />
             <div className={styles.btnGroup}>
               <button
@@ -105,6 +105,7 @@ function TodoListItem({
                 disabled={isOperationLoading}
               />
             </label>
+            {/* Accessibility: button instead of span so todo title is keyboard navigable */}
             <button
               className={todo.isCompleted ? styles.completedTodo : styles.todo}
               onClick={() => setIsEditing(true)}

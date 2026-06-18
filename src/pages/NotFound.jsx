@@ -7,8 +7,8 @@ function NotFound() {
 
   return (
     <div className="pageCard">
+      <h2 className="pageTitle">404: Not Found</h2>
       <div className={styles.pageContent}>
-        <h2 className="pageTitle">404: Not Found</h2>
         <p className="errorMessage">Invalid path: {pathname}</p>
         <ul className={styles.linkBar}>
           <li>

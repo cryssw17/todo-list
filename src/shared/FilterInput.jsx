@@ -11,7 +11,7 @@ function FilterInput({ filterTerm, onFilterChange }) {
         value={filterTerm}
         onChange={(e) => onFilterChange(e.target.value)}
         placeholder="Search by title..."
-        maxLength="255"
+        maxLength="70"
       ></input>
     </div>
   );

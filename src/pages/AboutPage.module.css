@@ -17,6 +17,10 @@
   padding-left: var(--spacing-lg);
 }
 
+.features li {
+  margin-bottom: var(--spacing-sm);
+}
+
 .sectionTitle {
   color: var(--color-secondary);
   filter: brightness(0.8);
