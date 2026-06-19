@@ -1,0 +1,28 @@
+.pageContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.linkBar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-md);
+  list-style: none;
+}
+
+.linkItem {
+  background-color: var(--color-accent);
+  color: var(--color-text);
+  border-radius: 5px;
+  font-weight: 500;
+  padding: 5px 10px;
+  text-decoration: none;
+  list-style: none;
+}
+
+.linkItem:hover {
+  background-color: rgba(var(--color-background-rgb), 0.3);
+}

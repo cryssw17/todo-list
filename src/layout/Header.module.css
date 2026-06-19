@@ -1,0 +1,23 @@
+.header {
+  background-color: var(--color-secondary);
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: var(--spacing-sm);
+  gap: var(--spacing-sm);
+}
+
+.headerTitle {
+  background-color: rgba(var(--color-accent-rgb), 0.7);
+  align-items: center;
+  padding: var(--spacing-sm);
+  border-radius: 5px;
+}
+
+@media (min-width: 768px) {
+  .header {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
