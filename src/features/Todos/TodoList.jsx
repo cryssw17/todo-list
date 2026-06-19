@@ -1,22 +1,67 @@
 import TodoListItem from "../TodoList/TodoListItem.jsx";
+import { useMemo } from "react";
+import styles from "./TodoList.module.css";
 
-function TodoList({todoList, onCompleteTodo, onUpdateTodo, isOperationLoading}) {
+function TodoList({
+  todoList,
+  onCompleteTodo,
+  onUpdateTodo,
+  onDeleteTodo,
+  isOperationLoading,
+  dataVersion,
+  statusFilter = "active", //setting default status to active todos
+}) {
+  const filteredTodoList = useMemo(() => {
+    let filteredTodos = [];
+    switch (statusFilter) {
+      case "completed":
+        filteredTodos = todoList.filter((todo) => todo.isCompleted);
+        break;
+      case "active":
+        filteredTodos = todoList.filter((todo) => !todo.isCompleted);
+        break;
+      case "all":
+      default:
+        filteredTodos = todoList;
+        break;
+    }
 
-  const filteredTodoList = todoList.filter(todo => (!todo.isCompleted));
+    return {
+      version: dataVersion,
+      todos: filteredTodos,
+    };
+  }, [todoList, dataVersion, statusFilter]);
 
-    return (
-      <div>
-      {filteredTodoList.length === 0 ? (<p>Add todo above to get started</p>) : (<ul>
-        {filteredTodoList.map(todo =>
-           <TodoListItem
-             key={todo.id}
-             todo={todo}
-             onCompleteTodo={onCompleteTodo}
-             onUpdateTodo={onUpdateTodo} 
-             isOperationLoading={isOperationLoading}/>)}
-      </ul>)}
-      </div>
-    );
+  const getEmptyMessage = () => {
+    switch (statusFilter) {
+      case "completed":
+        return "No completed todos yet. Complete some tasks to see them here!";
+      case "active":
+        return "No active todos yet. Add a todo above to get started!";
+      case "all":
+      default:
+        return "Add todo above to get started!";
+    }
+  };
+
+  return filteredTodoList.todos.length === 0 ? (
+    <div className={styles.messageContainer}>
+      <p className={styles.message}>{getEmptyMessage()}</p>
+    </div>
+  ) : (
+    <ul className={styles.todoList}>
+      {filteredTodoList.todos.map((todo) => (
+        <TodoListItem
+          key={todo.id}
+          todo={todo}
+          onCompleteTodo={onCompleteTodo}
+          onUpdateTodo={onUpdateTodo}
+          onDeleteTodo={onDeleteTodo}
+          isOperationLoading={isOperationLoading}
+        />
+      ))}
+    </ul>
+  );
 }
 
 export default TodoList;

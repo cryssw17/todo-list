@@ -1,0 +1,30 @@
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  width: 100%;
+}
+
+.btn {
+  background-color: var(--color-secondary);
+  border-radius: 7px;
+  padding: 1rem 2rem;
+  font-size: var(--font-size-base);
+  width: 100%;
+}
+
+.btn:hover {
+  filter: brightness(0.8);
+  color: white;
+}
+
+.btn:active {
+  transform: translateY(4px);
+}
+
+@media (min-width: 768px) {
+  .btn {
+    width: auto;
+  }
+}

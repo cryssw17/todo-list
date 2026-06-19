@@ -1,0 +1,14 @@
+.logoutBtn {
+  background-color: var(--color-primary);
+  border-radius: 7px;
+  padding: 0.25rem 1em;
+  font-size: var(--font-size-base);
+}
+
+.logoutBtn:hover {
+  filter: brightness(0.8);
+}
+
+.logoutBtn:active {
+  transform: translateY(4px);
+}
