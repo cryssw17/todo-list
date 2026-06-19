@@ -52,7 +52,7 @@ function LoginPage() {
 
     const loginRequest = await login(sanitizedEmail, sanitizedPassword);
     if (!loginRequest.success) {
-      setAuthError(`${loginRequest.error}. Please try again.`);
+      setAuthError(loginRequest.error);
     }
     setIsLoggingOn(false);
   }
