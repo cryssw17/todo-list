@@ -37,7 +37,7 @@ function LoginPage() {
     const isLoginValid = isValidLoginInput(email, password);
 
     if (!isLoginValid) {
-      setInputError("No email or passwod entered. Please try again.");
+      setInputError("No email or password entered. Please try again.");
       return;
     }
     setIsLoggingOn(true);
