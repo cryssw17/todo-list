@@ -212,7 +212,7 @@ export function todoReducer(state, action) {
       return {
         ...state,
         filterTerm: "",
-        sortBy: "createdDate",
+        sortBy: "createdAt",
         sortDirection: "asc",
         filterError: "",
       };

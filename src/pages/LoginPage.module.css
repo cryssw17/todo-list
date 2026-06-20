@@ -23,6 +23,10 @@
   transform: translateY(4px);
 }
 
+.btn:focus-visible {
+  border: 3px solid var(--color-accent);
+}
+
 @media (min-width: 768px) {
   .btn {
     width: auto;

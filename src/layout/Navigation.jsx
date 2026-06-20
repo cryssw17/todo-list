@@ -20,8 +20,8 @@ function Navigation() {
         </li>
 
         {/* todos-authenticated */}
-        <li>
-          {isAuthenticated && (
+        {isAuthenticated && (
+          <li>
             <NavLink
               to="/todos"
               className={({ isActive }) =>
@@ -30,11 +30,11 @@ function Navigation() {
             >
               Todos
             </NavLink>
-          )}
-        </li>
+          </li>
+        )}
         {/* profile-authenticated */}
-        <li>
-          {isAuthenticated && (
+        {isAuthenticated && (
+          <li>
             <NavLink
               to="/profile"
               className={({ isActive }) =>
@@ -43,11 +43,11 @@ function Navigation() {
             >
               Profile
             </NavLink>
-          )}
-        </li>
+          </li>
+        )}
         {/* login-non authenticated */}
-        <li>
-          {!isAuthenticated && (
+        {!isAuthenticated && (
+          <li>
             <NavLink
               to="/login"
               className={({ isActive }) =>
@@ -56,8 +56,8 @@ function Navigation() {
             >
               Login
             </NavLink>
-          )}
-        </li>
+          </li>
+        )}
       </ul>
     </nav>
   );

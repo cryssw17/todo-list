@@ -21,6 +21,10 @@
   background-color: rgba(var(--color-background-rgb), 0.8);
 }
 
+.navLink:focus-visible {
+  border: 3px solid var(--color-secondary);
+}
+
 .activeLink {
   composes: navLink;
   font-weight: bold;
